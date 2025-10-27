@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emotion Recognition with Personalized Coaching</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: #007bff;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    input[type="file"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px dashed #007bff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    input[type="file"]:hover {
+      border-color: #0056b3;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 0.75rem;
+      background: #007bff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    pre#result {
+      background: #e9ecef;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 100px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      color: #212529;
+      text-align: left;
+    }
+    .message {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      padding: 1rem;
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Emotion Recognition</h1>
+    <form id="upload-form" enctype="multipart/form-data" method="post" action="/upload">
+      <input type="file" name="file" accept="image/*" required />
+      <input type="submit" value="Analyze Emotion" />
+    </form>
+    <pre id="result"></pre>
+    <div id="message" class="message" style="display:none;"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('upload-form');
+    const resultElem = document.getElementById('result');
+    const messageElem = document.getElementById('message');
+
+    form.onsubmit = async function (e) {
+      e.preventDefault();
+      messageElem.style.display = 'none';
+      resultElem.innerText = '';
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data
+        });
+        const json = await res.json();
+        if (json.error) {
+          resultElem.innerText = 'Error: ' + json.error;
+          return;
+        }
+        resultElem.innerText = JSON.stringify({
+          emotion: json.emotion,
+          score: json.score.toFixed(3),
+        }, null, 2);
+        messageElem.innerText = json.message;
+        messageElem.style.display = 'block';
+      } catch (error) {
+        resultElem.innerText = 'Error uploading or processing the image.';
+      }
+    };
+  </script>
+</body>
+</html>
