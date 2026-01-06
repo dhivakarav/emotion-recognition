@@ -1,5 +1,5 @@
 Emotion Recognition System
-
+ 
 AI-Powered Facial Expression Analysis
  
 This project is a Python-based Emotion Recognition system that utilizes deep learning to identify human emotions from images or real-time video feeds. As a B.Tech CSE (AI & ML) student, I developed this to explore computer vision and neural network architectures.
