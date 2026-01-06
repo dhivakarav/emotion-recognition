@@ -17,7 +17,7 @@ Modular Code: Built with a clean Python structure for easy integration into othe
 Tech Stack
 Language: Python 3.x
 
-Libraries: OpenCV, TensorFlow/Keras, NumPy
+Libraries: OpenCV, TensorFlow/Keras, NumPy 
 
 Environment: Pyenv (for dependency management)
 
